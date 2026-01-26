@@ -180,118 +180,118 @@
                                         </div>
 
                                         <div class="mps-product-title">{{ $product?->nombre ?? 'Producto' }}</div>
-                                        <div class="ml-4 text-sm text-gray-500">Turnos: {{ $r['turnosTotales'] }} · Harina: {{ number_format($r['harinaTotalKg'],2,',','.') }}</div>
-                                        <div class="ml-auto flex items-center gap-2">
-                                            <div class="text-sm text-gray-600">Total: {{ number_format($r['produccionTotal'] ?? 0,2,',','.') }}</div>
-                                            <button wire:click="exportProductoCsv({{ $product->id }})" class="text-xs px-2 py-1 bg-gray-100 rounded">CSV</button>
-                                        </div>
+                                            <div class="ml-4 text-sm text-gray-500">Turnos: {{ $r['turnosTotales'] }} · Harina: {{ number_format($r['harinaTotalKg'],2,',','.') }}</div>
+                                            <div class="ml-auto flex items-center gap-2">
+                                                <div class="text-sm text-gray-600">Total: {{ number_format($r['produccionTotal'] ?? 0,2,',','.') }}</div>
+                                                <button wire:click="exportProductoCsv({{ $product->id }})" class="text-xs px-2 py-1 bg-gray-100 rounded">CSV</button>
+                                            </div>
                                     </div>
 
-                                    @if(empty($displayFilas))
-                                        <div class="p-4 text-sm text-gray-600">No hay datos para este producto en el rango seleccionado.</div>
-                                    @else
-                                        <div x-show="open_{{ $pid }}" class="mps-scroll mps-container">
-                                            <table class="min-w-full text-sm mps-table">
-                                                <thead class="sticky top-0 z-10 bg-white dark:bg-gray-900">
-                                                    <tr class="border-b border-gray-200 dark:border-gray-800">
-                                                        <th class="p-3 text-left">Productos</th>
-                                                        @foreach($dates as $d)
-                                                            @php
-                                                                $row = current(array_filter($displayFilas, function($x) use ($d) { return $x['fecha'] === $d; }));
-                                                            @endphp
-                                                            <th class="p-3 text-center date-col">
-                                                                <div class="text-sm font-medium">{{ $d }}</div>
-                                                                @if(!empty($row['entrega_proxima_count']))
-                                                                    <div class="text-xs mt-1 inline-flex items-center px-2 py-0.5 rounded text-white bg-yellow-600">Entrega {{ $row['entrega_proxima_count'] }}</div>
-                                                                @endif
-                                                                @if(!empty($row['ordenes_incluidas_qty']))
-                                                                    <div class="text-xs mt-1 inline-flex items-center px-2 py-0.5 rounded text-green-800 bg-green-100">Incl.: {{ number_format($row['ordenes_incluidas_qty'],0,',','.') }}</div>
-                                                                @endif
-                                                            </th>
-                                                        @endforeach
-                                                    </tr>
-                                                </thead>
+                                @if(empty($displayFilas))
+                                    <div class="p-4 text-sm text-gray-600">No hay datos para este producto en el rango seleccionado.</div>
+                                @else
+                                    <div x-show="open_{{ $pid }}" class="mps-scroll mps-container">
+                                        <table class="min-w-full text-sm mps-table">
+                                            <thead class="sticky top-0 z-10 bg-white dark:bg-gray-900">
+                                                <tr class="border-b border-gray-200 dark:border-gray-800">
+                                                    <th class="p-3 text-left">Productos</th>
+                                                    @foreach($dates as $d)
+                                                        @php
+                                                            $row = current(array_filter($displayFilas, function($x) use ($d) { return $x['fecha'] === $d; }));
+                                                        @endphp
+                                                        <th class="p-3 text-center date-col">
+                                                            <div class="text-sm font-medium">{{ $d }}</div>
+                                                            @if(!empty($row['entrega_proxima_count']))
+                                                                <div class="text-xs mt-1 inline-flex items-center px-2 py-0.5 rounded text-white bg-yellow-600">Entrega {{ $row['entrega_proxima_count'] }}</div>
+                                                            @endif
+                                                            @if(!empty($row['ordenes_incluidas_qty']))
+                                                                <div class="text-xs mt-1 inline-flex items-center px-2 py-0.5 rounded text-green-800 bg-green-100">Incl.: {{ number_format($row['ordenes_incluidas_qty'],0,',','.') }}</div>
+                                                            @endif
+                                                        </th>
+                                                    @endforeach
+                                                </tr>
+                                            </thead>
 
-                                                <tbody class="bg-white dark:bg-gray-900 divide-y">
-                                                    <tr class="bg-gray-50 dark:bg-gray-800">
-                                                        <td class="p-3 font-semibold">Inventario inicial</td>
+                                            <tbody class="bg-white dark:bg-gray-900 divide-y">
+                                                <tr class="bg-gray-50 dark:bg-gray-800">
+                                                    <td class="p-3 font-semibold">Inventario inicial</td>
+                                                    @foreach($displayFilas as $f)
+                                                        <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['inv_inicial'] ?? 0, 2, ',', '.') }}</td>
+                                                    @endforeach
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="p-3 font-semibold text-red-600">Demanda (máx. de)</td>
+                                                    @foreach($displayFilas as $f)
+                                                        <td class="p-3 text-right value-col text-red-600 font-semibold">{{ number_format($f['demanda'] ?? 0, 2, ',', '.') }}</td>
+                                                    @endforeach
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="p-3 pl-6 text-sm text-gray-600">Pronóstico de ventas</td>
+                                                    @foreach($displayFilas as $f)
+                                                        <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['pronostico'] ?? $f['demanda'] ?? 0, 2, ',', '.') }}</td>
+                                                    @endforeach
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="p-3 pl-6 text-sm text-gray-600">Órdenes en firme</td>
+                                                    @foreach($displayFilas as $f)
+                                                        <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['ordenes_en_firme'] ?? $f['ordenes_incluidas_qty'] ?? 0, 2, ',', '.') }}</td>
+                                                    @endforeach
+                                                </tr>
+
+                                                <tr class="bg-gray-50 dark:bg-gray-800">
+                                                    <td class="p-3 font-semibold">Suministro (máx. de)</td>
+                                                    @foreach($displayFilas as $f)
+                                                        <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['suministro_max'] ?? ($f['prod_sugerida'] ?? 0), 2, ',', '.') }}</td>
+                                                    @endforeach
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="p-3 pl-6 text-sm text-gray-600">Plan de producción</td>
+                                                    @foreach($displayFilas as $f)
+                                                        <td class="p-3 text-right value-col">
+                                                            <div class="inline-flex items-center justify-end">
+                                                                <span class="mr-2 inline-block text-xs text-gray-500 hidden md:inline">Sugerida</span>
+                                                                <span class="inline-flex rounded-md px-3 py-1 text-sm font-medium bg-blue-50 text-blue-700">{{ number_format($f['prod_sugerida'] ?? 0, 2, ',', '.') }}</span>
+                                                            </div>
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="p-3 pl-6 text-sm text-gray-600">Ya programado</td>
+                                                    @foreach($displayFilas as $f)
+                                                        <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['ya_programado'] ?? 0, 2, ',', '.') }}</td>
+                                                    @endforeach
+                                                </tr>
+
+                                                <tr class="bg-gray-50 dark:bg-gray-800">
+                                                    <td class="p-3 font-semibold">Inventario final</td>
+                                                    @foreach($displayFilas as $f)
+                                                        @php $inv = $f['inv_final'] ?? 0; @endphp
+                                                        <td class="p-3 text-right value-col font-semibold {{ $inv < 0 ? 'bg-red-600 text-white' : '' }}">{{ number_format($inv, 2, ',', '.') }}</td>
+                                                    @endforeach
+                                                </tr>
+                                            </tbody>
+
+                                            @if(count($displayFilas))
+                                                <tfoot class="bg-gray-50 dark:bg-gray-900">
+                                                    <tr class="border-t font-semibold">
+                                                        <td class="p-3">Totales</td>
                                                         @foreach($displayFilas as $f)
-                                                            <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['inv_inicial'] ?? 0, 2, ',', '.') }}</td>
+                                                            <td class="p-3 text-right">&nbsp;</td>
                                                         @endforeach
                                                     </tr>
-
-                                                    <tr>
-                                                        <td class="p-3 font-semibold text-red-600">Demanda (máx. de)</td>
-                                                        @foreach($displayFilas as $f)
-                                                            <td class="p-3 text-right value-col text-red-600 font-semibold">{{ number_format($f['demanda'] ?? 0, 2, ',', '.') }}</td>
-                                                        @endforeach
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="p-3 pl-6 text-sm text-gray-600">Pronóstico de ventas</td>
-                                                        @foreach($displayFilas as $f)
-                                                            <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['pronostico'] ?? $f['demanda'] ?? 0, 2, ',', '.') }}</td>
-                                                        @endforeach
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="p-3 pl-6 text-sm text-gray-600">Órdenes en firme</td>
-                                                        @foreach($displayFilas as $f)
-                                                            <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['ordenes_en_firme'] ?? $f['ordenes_incluidas_qty'] ?? 0, 2, ',', '.') }}</td>
-                                                        @endforeach
-                                                    </tr>
-
-                                                    <tr class="bg-gray-50 dark:bg-gray-800">
-                                                        <td class="p-3 font-semibold">Suministro (máx. de)</td>
-                                                        @foreach($displayFilas as $f)
-                                                            <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['suministro_max'] ?? ($f['prod_sugerida'] ?? 0), 2, ',', '.') }}</td>
-                                                        @endforeach
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="p-3 pl-6 text-sm text-gray-600">Plan de producción</td>
-                                                        @foreach($displayFilas as $f)
-                                                            <td class="p-3 text-right value-col">
-                                                                <div class="inline-flex items-center justify-end">
-                                                                    <span class="mr-2 inline-block text-xs text-gray-500 hidden md:inline">Sugerida</span>
-                                                                    <span class="inline-flex rounded-md px-3 py-1 text-sm font-medium bg-blue-50 text-blue-700">{{ number_format($f['prod_sugerida'] ?? 0, 2, ',', '.') }}</span>
-                                                                </div>
-                                                            </td>
-                                                        @endforeach
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="p-3 pl-6 text-sm text-gray-600">Ya programado</td>
-                                                        @foreach($displayFilas as $f)
-                                                            <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['ya_programado'] ?? 0, 2, ',', '.') }}</td>
-                                                        @endforeach
-                                                    </tr>
-
-                                                    <tr class="bg-gray-50 dark:bg-gray-800">
-                                                        <td class="p-3 font-semibold">Inventario final</td>
-                                                        @foreach($displayFilas as $f)
-                                                            @php $inv = $f['inv_final'] ?? 0; @endphp
-                                                            <td class="p-3 text-right value-col font-semibold {{ $inv < 0 ? 'bg-red-600 text-white' : '' }}">{{ number_format($inv, 2, ',', '.') }}</td>
-                                                        @endforeach
-                                                    </tr>
-                                                </tbody>
-
-                                                @if(count($displayFilas))
-                                                    <tfoot class="bg-gray-50 dark:bg-gray-900">
-                                                        <tr class="border-t font-semibold">
-                                                            <td class="p-3">Totales</td>
-                                                            @foreach($displayFilas as $f)
-                                                                <td class="p-3 text-right">&nbsp;</td>
-                                                            @endforeach
-                                                        </tr>
-                                                    </tfoot>
-                                                @endif
-                                            </table>
-                                        </div>
-                                    @endif
+                                                </tfoot>
+                                            @endif
+                                        </table>
                                     </div>
+                                @endif
                                 </div>
-                            @endforeach
+                            </div>
+                        @endforeach
                     @endif
 
                     <div class="mt-3 text-xs text-gray-500">Nota: filas en rojo = inventario final por debajo del stock mínimo. Usa la fila "Plan de producción" para ver la propuesta sugerida por semana.</div>

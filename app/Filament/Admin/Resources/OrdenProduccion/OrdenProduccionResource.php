@@ -36,10 +36,12 @@ class OrdenProduccionResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->label('ID')->sortable(),
-                TextColumn::make('fecha')->label('Fecha')->date('d/m/Y')->sortable(),
+                // Mostrar la fecha del pedido relacionado (la tabla de órdenes no tiene columna `fecha`)
+                TextColumn::make('pedido.fecha')->label('Fecha')->date('d/m/Y')->sortable(),
                 TextColumn::make('created_at')->label('Creada')->dateTime('d/m/Y H:i')->sortable(),
             ])
-            ->defaultSort('fecha', 'desc');
+            // Ordenar por `created_at` por defecto para evitar SQL en columna inexistente
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getPages(): array
