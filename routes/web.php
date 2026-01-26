@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+use Illuminate\Support\Facades\Redirect;
+
+// Redirect root to admin panel by default
+Route::redirect('/', '/admin');
+
+// Keep welcome route available if needed under /welcome
+Route::get('/welcome', function () {
     return view('welcome');
 });

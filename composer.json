@@ -65,6 +65,7 @@
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ],
+        "serve-open": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\serve-and-open.ps1",
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
         ]
