@@ -52,7 +52,7 @@ class PropuestaMaestra extends Page
 
     public function getView(): string
     {
-        return 'filament.pages.propuesta-maestra';
+        return 'filament.admin.propuesta-maestra';
     }
 
     public function mount(): void

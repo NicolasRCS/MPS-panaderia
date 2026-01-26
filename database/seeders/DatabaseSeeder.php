@@ -15,12 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create a test user (only if not exists)
+        // Create admin user (only if not exists)
         \App\Models\User::firstOrCreate([
-            'email' => 'test@example.com',
+            'email' => 'admin@panaderia.com',
         ], [
-            'name' => 'Test User',
-            'password' => bcrypt('password'),
+            'name' => 'Admin',
+            'password' => bcrypt('password123'),
         ]);
 
         // Create several productos (if they don't exist)

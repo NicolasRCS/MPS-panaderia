@@ -6,10 +6,9 @@ use App\Models\Horno;
 use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Card;
 use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
+use Filament\Schemas\Schema;
 use BackedEnum;
 
 class Hornos extends Page
@@ -26,17 +25,15 @@ class Hornos extends Page
 
     public function getView(): string
     {
-        return 'filament.pages.hornos';
+        return 'filament.admin.hornos';
     }
 
-    public function form(Form\Schema $schema)
+    public function form(Schema $schema)
     {
         return $schema->components([
-            Card::make()->schema([
-                TextInput::make('nombre')->required()->label('Nombre'),
-                TextInput::make('tipo')->label('Tipo'),
-                TextInput::make('capacidad_por_turno')->label('Capacidad por turno')->numeric()->minValue(0)->required(),
-            ]),
+            TextInput::make('nombre')->required()->label('Nombre'),
+            TextInput::make('tipo')->label('Tipo'),
+            TextInput::make('capacidad_por_turno')->label('Capacidad por turno')->numeric()->minValue(0)->required(),
         ]);
     }
 
