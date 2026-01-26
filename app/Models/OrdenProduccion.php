@@ -5,20 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Pedido extends Model
+class OrdenProduccion extends Model
 {
-    protected $table = 'pedidos';
+    protected $table = 'ordenes_produccion';
 
     protected $fillable = [
-        'fecha',
+        'pedido_id',
         'producto_id',
         'cantidad',
         'estado',
     ];
 
-    protected $casts = [
-        'fecha' => 'date',
-    ];
+    public function pedido(): BelongsTo
+    {
+        return $this->belongsTo(Pedido::class, 'pedido_id');
+    }
 
     public function producto(): BelongsTo
     {
