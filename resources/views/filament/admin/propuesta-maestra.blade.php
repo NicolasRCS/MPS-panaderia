@@ -214,42 +214,42 @@
 
                                                 <tbody class="bg-white dark:bg-gray-900 divide-y">
                                                     <tr class="bg-gray-50 dark:bg-gray-800">
-                                                        <td class="p-3 font-semibold">Inventario inicial</td>
+                                                        <td class="p-3 font-semibold" title="Cantidad de producto disponible al inicio del periodo">Inventario inicial</td>
                                                         @foreach($displayFilas as $f)
                                                             <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['inv_inicial'] ?? 0, 2, ',', '.') }}</td>
                                                         @endforeach
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="p-3 font-semibold text-red-600">Demanda (máx. de)</td>
+                                                        <td class="p-3 font-semibold text-red-600" title="Cantidad máxima que se espera vender o entregar en el periodo">Demanda (máx. de)</td>
                                                         @foreach($displayFilas as $f)
                                                             <td class="p-3 text-right value-col text-red-600 font-semibold">{{ number_format($f['demanda'] ?? 0, 2, ',', '.') }}</td>
                                                         @endforeach
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="p-3 pl-6 text-sm text-gray-600">Pronóstico de ventas</td>
+                                                        <td class="p-3 pl-6 text-sm text-gray-600" title="Estimación de ventas basada en pronósticos">Pronóstico de ventas</td>
                                                         @foreach($displayFilas as $f)
                                                             <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['pronostico'] ?? $f['demanda'] ?? 0, 2, ',', '.') }}</td>
                                                         @endforeach
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="p-3 pl-6 text-sm text-gray-600">Órdenes en firme</td>
+                                                        <td class="p-3 pl-6 text-sm text-gray-600" title="Órdenes confirmadas que deben cumplirse">Órdenes en firme</td>
                                                         @foreach($displayFilas as $f)
                                                             <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['ordenes_en_firme'] ?? $f['ordenes_incluidas_qty'] ?? 0, 2, ',', '.') }}</td>
                                                         @endforeach
                                                     </tr>
 
                                                     <tr class="bg-gray-50 dark:bg-gray-800">
-                                                        <td class="p-3 font-semibold">Suministro (máx. de)</td>
+                                                        <td class="p-3 font-semibold" title="Cantidad máxima que se puede suministrar en el periodo">Suministro (máx. de)</td>
                                                         @foreach($displayFilas as $f)
                                                             <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['suministro_max'] ?? ($f['prod_sugerida'] ?? 0), 2, ',', '.') }}</td>
                                                         @endforeach
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="p-3 pl-6 text-sm text-gray-600">Plan de producción</td>
+                                                        <td class="p-3 pl-6 text-sm text-gray-600" title="Cantidad sugerida para producir en el periodo">Plan de producción</td>
                                                         @foreach($displayFilas as $f)
                                                             <td class="p-3 text-right value-col">
                                                                 <div class="inline-flex items-center justify-end">
@@ -261,14 +261,14 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <td class="p-3 pl-6 text-sm text-gray-600">Ya programado</td>
+                                                        <td class="p-3 pl-6 text-sm text-gray-600" title="Cantidad ya programada para producción">Ya programado</td>
                                                         @foreach($displayFilas as $f)
                                                             <td class="p-3 text-right value-col text-gray-600">{{ number_format($f['ya_programado'] ?? 0, 2, ',', '.') }}</td>
                                                         @endforeach
                                                     </tr>
 
                                                     <tr class="bg-gray-50 dark:bg-gray-800">
-                                                        <td class="p-3 font-semibold">Inventario final</td>
+                                                        <td class="p-3 font-semibold" title="Cantidad de producto que queda al final del periodo">Inventario final</td>
                                                         @foreach($displayFilas as $f)
                                                             @php $inv = $f['inv_final'] ?? 0; @endphp
                                                             <td class="p-3 text-right value-col font-semibold {{ $inv < 0 ? 'bg-red-600 text-white' : '' }}">{{ number_format($inv, 2, ',', '.') }}</td>
