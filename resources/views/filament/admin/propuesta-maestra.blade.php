@@ -39,121 +39,175 @@
 
         /* Totals row */
         .mps-table tfoot td { font-weight: 700; border-top: 1px solid #e5e7eb; }
+
+        /* Custom tab buttons */
+        .mps-tab-btn {
+            margin-right: 18px;
+            padding: 0.5rem 1.2rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            border: 1.5px solid #e5e7eb;
+            background: #f3f4f6;
+            color: #374151;
+            transition: all 0.18s;
+        }
+        .mps-tab-btn:last-child { margin-right: 0; }
+        .mps-tab-btn.active {
+            background: #2563eb;
+            color: #fff;
+            border-color: #2563eb;
+        }
+        .mps-tab-btn:hover:not(.active) {
+            background: #e0e7ff;
+            color: #1e40af;
+        }
     </style>
 
-    <div x-data="{ tab: @entangle('openTab') }" class="space-y-6">
-        {{-- Cabecera de pestañas --}}
+    <div x-data="{ tab: @entangle('openTab'), tabPlan: 'parametros' }" class="space-y-6">
+        {{-- Cabecera de solapas --}}
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-4">
                 <div>
-                    <h2 class="text-lg font-semibold">Propuesta Maestra (MPS)</h2>
+                    <h2 class="text-lg font-semibold">Plan Maestro de producción</h2>
                     <div class="text-sm text-gray-500">Planificación de producción y entregas</div>
                 </div>
 
-                <div class="flex items-center space-x-2">
-                    <button type="button" @click.prevent="tab = 'parametros'" :class="tab === 'parametros' ? 'bg-primary-700 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-3 py-1 rounded-md text-sm">Parámetros</button>
-                    <button type="button" @click.prevent="tab = 'resumen'" :class="tab === 'resumen' ? 'bg-primary-700 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-3 py-1 rounded-md text-sm">Resumen</button>
-                    <button type="button" @click.prevent="tab = 'tabla'" :class="tab === 'tabla' ? 'bg-primary-700 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-3 py-1 rounded-md text-sm">Tabla</button>
+                <div class="flex items-center">
+                    <button type="button"
+                        @click.prevent="tab = 'plan'"
+                        :class="['mps-tab-btn', tab === 'plan' ? 'active' : '']"
+                    >Plan maestro de producción</button>
+                    <button type="button"
+                        @click.prevent="tab = 'capacidad'"
+                        :class="['mps-tab-btn', tab === 'capacidad' ? 'active' : '']"
+                    >Capacidad requerida</button>
+                    <button type="button"
+                        @click.prevent="tab = 'calendario'"
+                        :class="['mps-tab-btn', tab === 'calendario' ? 'active' : '']"
+                    >Calendario de stock</button>
                 </div>
             </div>
 
             <div>
-                <x-filament::button color="primary" size="sm" class="px-4 py-2" x-on:click="tab = 'tabla'" wire:click="recalcular">Calcular MPS</x-filament::button>
+                <x-filament::button color="primary" size="sm" class="px-4 py-2" x-on:click="tab = 'plan'" wire:click="recalcular">Calcular MPS</x-filament::button>
             </div>
         </div>
 
-        {{-- Contenido de pestañas --}}
+        {{-- Contenido de solapas --}}
         <div>
-            {{-- Parámetros (form) --}}
-            <div x-show="tab === 'parametros'" x-cloak>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <x-filament::section class="col-span-2">
-                        <div class="mb-4 text-sm text-gray-600">Ajustá parámetros para generar la propuesta. Los resultados se mostrarán en la pestaña Tabla.</div>
-                        {{ $this->form }}
-                    </x-filament::section>
+            {{-- Calendario de stock (vacío) --}}
+            <div x-show="tab === 'calendario'" x-cloak></div>
 
-                    <div class="col-span-1">
-                        <x-filament::card class="p-4">
-                            <div class="text-sm text-gray-500">Resumen rápido</div>
-                            <div class="mt-4 space-y-3">
+            {{-- Capacidad requerida (vacío) --}}
+            <div x-show="tab === 'capacidad'" x-cloak></div>
+
+            {{-- Plan maestro de producción (antes Tabla) --}}
+            <div x-show="tab === 'plan'" x-cloak>
+                {{-- Subopciones de la solapa Plan maestro de producción --}}
+                <div class="flex items-center mb-6">
+                    <button type="button"
+                        @click.prevent="tabPlan = 'parametros'"
+                        :class="['mps-tab-btn', tabPlan === 'parametros' ? 'active' : '']"
+                    >Parámetros</button>
+                    <button type="button"
+                        @click.prevent="tabPlan = 'resumen'"
+                        :class="['mps-tab-btn', tabPlan === 'resumen' ? 'active' : '']"
+                    >Resumen</button>
+                    <button type="button"
+                        @click.prevent="tabPlan = 'tabla'"
+                        :class="['mps-tab-btn', tabPlan === 'tabla' ? 'active' : '']"
+                    >Tabla</button>
+                </div>
+
+                {{-- Contenido de subopciones --}}
+                <div x-show="tabPlan === 'parametros'" x-cloak>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <x-filament::section class="col-span-2">
+                            <div class="mb-4 text-sm text-gray-600">Ajustá parámetros para generar la propuesta. Los resultados se mostrarán en la pestaña Tabla.</div>
+                            {{ $this->form }}
+                        </x-filament::section>
+
+                        <div class="col-span-1">
+                            <x-filament::card class="p-4">
+                                <div class="text-sm text-gray-500">Resumen rápido</div>
+                                <div class="mt-4 space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-sm text-gray-500">Turnos totales</div>
+                                        <div class="mps-card-number font-semibold">{{ $turnosTotales }}</div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-sm text-gray-500">Hornos sugeridos</div>
+                                        <div class="mps-card-number font-semibold">{{ $hornosSugeridos }}</div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-sm text-gray-500">Harina (kg)</div>
+                                        <div class="mps-card-number font-semibold">{{ number_format($harinaTotalKg,2,',','.') }}</div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <div class="text-sm text-gray-500">Producción total</div>
+                                        <div class="mps-card-number font-semibold">{{ number_format($produccionTotal,2,',','.') }}</div>
+                                    </div>
+                                </div>
+                            </x-filament::card>
+                            <x-filament::card class="mt-4 p-3">
                                 <div class="flex items-center justify-between">
-                                    <div class="text-sm text-gray-500">Turnos totales</div>
-                                    <div class="mps-card-number font-semibold">{{ $turnosTotales }}</div>
+                                    <div class="text-sm font-semibold">Últimos productos calculados</div>
+                                    <button wire:click="clearProductosCalculados" class="text-xs text-gray-500 hover:text-gray-700">Limpiar</button>
                                 </div>
 
-                                <div class="flex items-center justify-between">
-                                    <div class="text-sm text-gray-500">Hornos sugeridos</div>
-                                    <div class="mps-card-number font-semibold">{{ $hornosSugeridos }}</div>
+                                <div class="mt-3">
+                                    @if(empty($this->productosCalculados))
+                                        <div class="text-sm text-gray-500">No hay productos calculados aún.</div>
+                                    @else
+                                        <ul class="space-y-2">
+                                            @foreach($this->productosCalculados as $p)
+                                                <li>
+                                                    <button wire:click="selectProducto({{ $p['id'] }})" class="w-full text-left text-sm px-2 py-1 rounded hover:bg-gray-50">
+                                                        <div class="flex items-center justify-between">
+                                                            <div class="text-sm">{{ $p['nombre'] }}</div>
+                                                            <div class="text-xs text-gray-400">{{ \Illuminate\Support\Carbon::parse($p['calculado_en'])->format('Y-m-d H:i') }}</div>
+                                                        </div>
+                                                    </button>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
                                 </div>
+                            </x-filament::card>
+                        </div>
+                    </div>
+                </div>
 
-                                <div class="flex items-center justify-between">
-                                    <div class="text-sm text-gray-500">Harina (kg)</div>
-                                    <div class="mps-card-number font-semibold">{{ number_format($harinaTotalKg,2,',','.') }}</div>
-                                </div>
-
-                                <div class="flex items-center justify-between">
-                                    <div class="text-sm text-gray-500">Producción total</div>
-                                    <div class="mps-card-number font-semibold">{{ number_format($produccionTotal,2,',','.') }}</div>
-                                </div>
-                            </div>
+                <div x-show="tabPlan === 'resumen'" x-cloak>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <x-filament::card>
+                            <div class="text-sm text-gray-500">Hornos sugeridos</div>
+                            <div class="text-2xl font-bold">{{ $hornosSugeridos }}</div>
                         </x-filament::card>
-                        <x-filament::card class="mt-4 p-3">
-                            <div class="flex items-center justify-between">
-                                <div class="text-sm font-semibold">Últimos productos calculados</div>
-                                <button wire:click="clearProductosCalculados" class="text-xs text-gray-500 hover:text-gray-700">Limpiar</button>
-                            </div>
 
-                            <div class="mt-3">
-                                @if(empty($this->productosCalculados))
-                                    <div class="text-sm text-gray-500">No hay productos calculados aún.</div>
-                                @else
-                                    <ul class="space-y-2">
-                                        @foreach($this->productosCalculados as $p)
-                                            <li>
-                                                <button wire:click="selectProducto({{ $p['id'] }})" class="w-full text-left text-sm px-2 py-1 rounded hover:bg-gray-50">
-                                                    <div class="flex items-center justify-between">
-                                                        <div class="text-sm">{{ $p['nombre'] }}</div>
-                                                        <div class="text-xs text-gray-400">{{ \Illuminate\Support\Carbon::parse($p['calculado_en'])->format('Y-m-d H:i') }}</div>
-                                                    </div>
-                                                </button>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                @endif
-                            </div>
+                        <x-filament::card>
+                            <div class="text-sm text-gray-500">Turnos totales</div>
+                            <div class="text-2xl font-bold">{{ $turnosTotales }}</div>
+                        </x-filament::card>
+
+                        <x-filament::card>
+                            <div class="text-sm text-gray-500">Harina total (kg)</div>
+                            <div class="text-2xl font-bold">{{ number_format($harinaTotalKg, 2, ',', '.') }}</div>
+                        </x-filament::card>
+
+                        <x-filament::card>
+                            <div class="text-sm text-gray-500">Producción total</div>
+                            <div class="text-2xl font-bold">{{ number_format($produccionTotal, 2, ',', '.') }}</div>
                         </x-filament::card>
                     </div>
                 </div>
-            </div>
 
-            {{-- Resumen --}}
-            <div x-show="tab === 'resumen'" x-cloak>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <x-filament::card>
-                        <div class="text-sm text-gray-500">Hornos sugeridos</div>
-                        <div class="text-2xl font-bold">{{ $hornosSugeridos }}</div>
-                    </x-filament::card>
-
-                    <x-filament::card>
-                        <div class="text-sm text-gray-500">Turnos totales</div>
-                        <div class="text-2xl font-bold">{{ $turnosTotales }}</div>
-                    </x-filament::card>
-
-                    <x-filament::card>
-                        <div class="text-sm text-gray-500">Harina total (kg)</div>
-                        <div class="text-2xl font-bold">{{ number_format($harinaTotalKg, 2, ',', '.') }}</div>
-                    </x-filament::card>
-
-                    <x-filament::card>
-                        <div class="text-sm text-gray-500">Producción total</div>
-                        <div class="text-2xl font-bold">{{ number_format($produccionTotal, 2, ',', '.') }}</div>
-                    </x-filament::card>
-                </div>
-            </div>
-
-            {{-- Tabla --}}
-            <div x-show="tab === 'tabla'" x-cloak>
-                <x-filament::section>
+                <div x-show="tabPlan === 'tabla'" x-cloak>
+                    <x-filament::section>
                     @php
                         $results = $this->productosResultados ?? [];
                     @endphp

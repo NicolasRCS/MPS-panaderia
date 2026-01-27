@@ -25,8 +25,8 @@ class PropuestaMaestra extends Page
 {
     use InteractsWithForms;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static ?string $navigationLabel = 'Propuesta Maestra (MPS)';
-    protected static ?string $title = 'Propuesta Maestra (MPS)';
+    protected static ?string $navigationLabel = 'Plan Maestro de producción';
+    protected static ?string $title = 'Plan Maestro de producción';
 
     // Datos del form
     public ?int $productoId = null;
