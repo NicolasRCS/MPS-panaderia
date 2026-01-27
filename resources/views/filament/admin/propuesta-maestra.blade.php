@@ -347,9 +347,7 @@
                                     </div>
                                 </div>
                             @endforeach
-                    @endif
-
-                    <div class="mt-3 text-xs text-gray-500">Nota: filas en rojo = inventario final por debajo del stock mínimo. Usa la fila "Plan de producción" para ver la propuesta sugerida por semana.</div>
+                    @endif  
                 </x-filament::section>
             </div>
         </div>

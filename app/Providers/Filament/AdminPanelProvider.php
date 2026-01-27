@@ -55,6 +55,6 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->brandName('MPS Panadería - Administración');
+            ->brandName('Il Molino - Administración general');
     }
 }
