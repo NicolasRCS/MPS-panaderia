@@ -68,11 +68,6 @@
         {{-- Cabecera de solapas --}}
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <div>
-                    <h2 class="text-lg font-semibold">Plan Maestro de producción</h2>
-                    <div class="text-sm text-gray-500">Planificación de producción y entregas</div>
-                </div>
-
                 <div class="flex items-center">
                     <button type="button"
                         @click.prevent="tab = 'plan'"
