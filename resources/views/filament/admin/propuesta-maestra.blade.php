@@ -207,6 +207,12 @@
                                                                 @if(!empty($row['ordenes_incluidas_qty']))
                                                                     <div class="text-xs mt-1 inline-flex items-center px-2 py-0.5 rounded text-green-800 bg-green-100">Incl.: {{ number_format($row['ordenes_incluidas_qty'],0,',','.') }}</div>
                                                                 @endif
+                                                                <form method="POST" action="{{ route('admin.crear-orden-agrupada') }}" style="display:inline">
+                                                                    @csrf
+                                                                    <input type="hidden" name="producto_id" value="{{ $product->id }}">
+                                                                    <input type="hidden" name="fecha" value="{{ $d }}">
+                                                                    <button type="submit" class="text-xs mt-1 inline-flex items-center px-2 py-0.5 rounded text-white bg-blue-600 hover:bg-blue-700">Crear orden agrupada</button>
+                                                                </form>
                                                             </th>
                                                         @endforeach
                                                     </tr>

@@ -95,7 +95,9 @@ class PropuestaMaestra extends Page
 
             Select::make('ordenesSeleccionadas')
                 ->label('Incluir Órdenes de producción')
-                ->options(fn () => OrdenProduccion::with(['producto', 'pedido'])->get()->mapWithKeys(fn($o) => [ $o->id => ($o->producto?->nombre ?? '—') . ' — ' . (float)$o->cantidad . ' (' . ($o->pedido?->fecha ?? '-') . ')' ])->toArray())
+                ->options(fn () => OrdenProduccion::with(['producto', 'pedidos'])->get()->mapWithKeys(fn($o) => [
+                    $o->id => ($o->producto?->nombre ?? '—') . ' — ' . (float)$o->cantidad . ' (' . ($o->pedidos->pluck('fecha')->implode(', ') ?: '-') . ')'
+                ])->toArray())
                 ->multiple()
                 ->searchable()
                 ->helperText('Seleccioná órdenes que ya están planificadas y querés que formen parte de la Propuesta Maestra')
@@ -180,14 +182,17 @@ class PropuestaMaestra extends Page
             $produccionTotal = 0.0;
             $turnosTotalesLocal = 0;
 
-            // Pre-scheduled production from selected Ordenes de Producción (grouped by pedido fecha)
+            // Agrupar pedidos por producto y fecha para crear una sola orden de producción por grupo
             $preScheduledPerDate = [];
             if (!empty($this->ordenesSeleccionadas)) {
-                $ordenes = OrdenProduccion::with('pedido')->whereIn('id', $this->ordenesSeleccionadas)->get();
+                $ordenes = OrdenProduccion::with('pedidos')->whereIn('id', $this->ordenesSeleccionadas)->get();
                 foreach ($ordenes as $o) {
-                    $fechaPedido = $o->pedido?->fecha ?? null;
-                    if ($fechaPedido) {
-                        $preScheduledPerDate[$fechaPedido] = ($preScheduledPerDate[$fechaPedido] ?? 0) + (float) $o->cantidad;
+                    // Tomar la fecha de los pedidos asociados (puede haber varios)
+                    foreach ($o->pedidos as $pedido) {
+                        $fechaPedido = $pedido->fecha ?? null;
+                        if ($fechaPedido) {
+                            $preScheduledPerDate[$fechaPedido] = ($preScheduledPerDate[$fechaPedido] ?? 0) + (float) $o->cantidad;
+                        }
                     }
                 }
             }

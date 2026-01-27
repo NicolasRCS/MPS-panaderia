@@ -24,4 +24,9 @@ class Pedido extends Model
     {
         return $this->belongsTo(Producto::class, 'producto_id');
     }
+
+    public function ordenesProduccion()
+    {
+        return $this->belongsToMany(OrdenProduccion::class, 'pedido_orden_produccion', 'pedido_id', 'orden_produccion_id');
+    }
 }
