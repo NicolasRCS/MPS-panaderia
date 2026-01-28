@@ -1,0 +1,126 @@
+/* Estilos personalizados para el Panel de Vendedor - Il Molino */
+
+/* Mejoras en el sidebar */
+.fi-sidebar {
+    @apply bg-gradient-to-b from-gray-900 to-gray-800;
+}
+
+.fi-sidebar-nav {
+    @apply space-y-1;
+}
+
+.fi-sidebar-item-button {
+    @apply transition-all duration-200 hover:bg-gray-700/50 rounded-lg;
+}
+
+/* Logo en el sidebar */
+.fi-sidebar-header {
+    @apply py-6 px-4;
+}
+
+.fi-logo {
+    @apply transition-transform duration-200 hover:scale-105;
+}
+
+/* Mejoras en las estadísticas */
+.fi-stats-overview {
+    @apply gap-4;
+}
+
+.fi-stats-card {
+    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
+}
+
+/* Mejoras en las tablas */
+.fi-table {
+    @apply rounded-lg overflow-hidden shadow-md;
+}
+
+.fi-table-header {
+    @apply bg-gray-50 dark:bg-gray-800/50;
+}
+
+.fi-table-row {
+    @apply transition-colors duration-150 hover:bg-gray-50 dark:hover:bg-gray-800/30;
+}
+
+/* Mejoras en los badges */
+.fi-badge {
+    @apply font-semibold px-3 py-1 rounded-full text-xs uppercase tracking-wide;
+}
+
+/* Mejoras en los botones */
+.fi-btn {
+    @apply transition-all duration-200 hover:shadow-md hover:-translate-y-0.5;
+}
+
+/* Widget de tabla personalizado */
+.pedidos-table-widget .fi-table {
+    @apply border border-gray-200 dark:border-gray-700;
+}
+
+/* Estilos para el dashboard */
+.fi-dashboard-page {
+    @apply space-y-6;
+}
+
+/* Mejoras en los encabezados */
+.fi-section-header {
+    @apply mb-4;
+}
+
+.fi-section-header-heading {
+    @apply text-2xl font-bold text-gray-900 dark:text-white;
+}
+
+.fi-section-header-description {
+    @apply text-sm text-gray-500 dark:text-gray-400 mt-1;
+}
+
+/* Animaciones suaves */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fi-widget {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Mejoras en los iconos */
+.fi-icon {
+    @apply transition-transform duration-200;
+}
+
+.fi-btn:hover .fi-icon,
+.fi-sidebar-item-button:hover .fi-icon {
+    @apply scale-110;
+}
+
+/* Estilos para el modo oscuro */
+@media (prefers-color-scheme: dark) {
+    .fi-stats-card {
+        @apply bg-gray-800/50 backdrop-blur-sm;
+    }
+    
+    .fi-table {
+        @apply bg-gray-800/30;
+    }
+}
+
+/* Mejoras responsivas */
+@media (max-width: 768px) {
+    .fi-stats-overview {
+        @apply grid-cols-1;
+    }
+    
+    .fi-table {
+        @apply text-sm;
+    }
+}

@@ -12,6 +12,8 @@ class Cliente extends Model
     protected $fillable = [
         'numero_pedido', // Número de pedido del cliente (ej: PED001, PED002)
         'nombre', // Nombre completo del cliente
+        'telefono', // Teléfono del cliente
+        'direccion', // Dirección del cliente
         'observaciones', // Observaciones o notas sobre el cliente
     ];
 

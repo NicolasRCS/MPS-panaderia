@@ -3,51 +3,53 @@
 namespace App\Filament\Vendedor\Pages;
 
 use Filament\Pages\Dashboard as BaseDashboard;
+use App\Filament\Vendedor\Widgets\PedidosActivosWidget;
+use App\Filament\Vendedor\Widgets\PedidosHoyWidget;
+use App\Filament\Vendedor\Widgets\EstadisticasGeneralesWidget;
+use App\Filament\Vendedor\Widgets\PedidosTableWidget;
+use BackedEnum;
 
-/**
- * Dashboard principal del Vendedor
- * 
- * Características:
- * - Visualización de widgets con estadísticas rápidas (pedidos activos, pedidos hoy)
- * - Acceso rápido a creación de nuevos pedidos
- * - Vista resumida de pedidos recientes
- * 
- * PENDIENTE DE IMPLEMENTAR:
- * - Configurar widgets en getHeaderWidgets()
- * - Agregar widgets personalizados en la carpeta Widgets/
- */
 class Dashboard extends BaseDashboard
 {
     protected static ?string $navigationLabel = 'Dashboard';
     
     protected static ?string $title = 'Gestión de Pedidos';
+    
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
+    
+    protected static ?int $navigationSort = 1;
 
-    /**
-     * Widgets que se mostrarán en la parte superior del dashboard
-     * 
-     * TODO: Agregar los widgets cuando estén implementados:
-     * - PedidosActivosWidget::class
-     * - PedidosHoyWidget::class
-     * - EstadisticasSemanalesWidget::class (opcional)
-     */
     public function getHeaderWidgets(): array
     {
         return [
-            // Aquí se agregarán los widgets
+            PedidosActivosWidget::class,
+            PedidosHoyWidget::class,
+            EstadisticasGeneralesWidget::class,
         ];
     }
 
-    /**
-     * Widgets que se mostrarán en el cuerpo del dashboard
-     * 
-     * TODO: Agregar widgets para:
-     * - Lista de pedidos recientes
-     * - Gráficos de estadísticas
-     */
     public function getWidgets(): array
     {
         return [
-            // Aquí se agregarán más widgets si es necesario
+            PedidosTableWidget::class,
+        ];
+    }
+    
+    public function getColumns(): int | array
+    {
+        return [
+            'sm' => 1,
+            'md' => 3,
+            'xl' => 3,
+        ];
+    }
+    
+    public function getHeaderWidgetsColumns(): int | array
+    {
+        return [
+            'sm' => 1,
+            'md' => 3,
+            'xl' => 3,
         ];
     }
 }

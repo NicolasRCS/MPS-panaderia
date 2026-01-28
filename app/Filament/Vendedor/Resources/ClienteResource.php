@@ -10,6 +10,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Schemas\Schema;
 use BackedEnum;
+use UnitEnum;
 
 /**
  * Resource: Clientes
@@ -39,6 +40,8 @@ class ClienteResource extends Resource
     protected static ?string $modelLabel = 'Cliente';
     
     protected static ?string $pluralModelLabel = 'Clientes';
+    
+    protected static string|UnitEnum|null $navigationGroup = null;
     
     protected static ?int $navigationSort = 2;
 

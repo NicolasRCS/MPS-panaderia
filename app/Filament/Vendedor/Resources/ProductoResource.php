@@ -10,6 +10,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Schemas\Schema;
 use BackedEnum;
+use UnitEnum;
 
 /**
  * Resource: Productos (Vista del Vendedor)
@@ -33,11 +34,13 @@ class ProductoResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cube';
     
-    protected static ?string $navigationLabel = 'Productos';
+    protected static ?string $navigationLabel = 'Catálogo';
     
     protected static ?string $modelLabel = 'Producto';
     
     protected static ?string $pluralModelLabel = 'Productos';
+    
+    protected static string|UnitEnum|null $navigationGroup = null;
     
     protected static ?int $navigationSort = 3;
 

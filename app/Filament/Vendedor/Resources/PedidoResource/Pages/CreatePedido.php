@@ -16,7 +16,8 @@ class CreatePedido extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['estado'] = 'nuevo';
+        $data['estado'] = $data['estado'] ?? 'nuevo';
+        $data['fecha_carga'] = now()->toDateString();
         return $data;
     }
 }

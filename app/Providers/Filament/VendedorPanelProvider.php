@@ -38,7 +38,20 @@ class VendedorPanelProvider extends PanelProvider
             ->path('vendedor')
             ->login()
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => [
+                    50 => '243, 244, 246',
+                    100 => '229, 231, 235',
+                    200 => '209, 213, 219',
+                    300 => '156, 163, 175',
+                    400 => '107, 114, 128',
+                    500 => '75, 85, 99',
+                    600 => '55, 65, 81',
+                    700 => '31, 41, 55',
+                    800 => '17, 24, 39',
+                    900 => '3, 7, 18',
+                    950 => '1, 2, 4',
+                ],
+                'gray' => Color::Zinc,
             ])
             // Auto-descubrimiento de Resources (Pedidos, Clientes, Productos)
             ->discoverResources(in: app_path('Filament/Vendedor/Resources'), for: 'App\Filament\Vendedor\Resources')
@@ -72,9 +85,18 @@ class VendedorPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->brandName('Il Molino - Vendedor')
-            ->brandLogo(asset('app/Filament/Vendedor/Resources/logo-il-molino-1.png'))
-            ->favicon(asset('app/Filament/Vendedor/Resources/logo-il-molino-1.png'));
+            ->brandName('Il Molino')
+            ->brandLogo(null)
+            ->brandLogoHeight('4rem')
+            ->darkModeBrandLogo(null)
+            ->favicon(asset('images/logo-il-molino-1.png'))
+            ->sidebarCollapsibleOnDesktop()
+            ->renderHook(
+                'panels::sidebar.start',
+                fn (): string => view('filament.vendedor.components.sidebar-logo')->render()
+            )
+            ->navigationGroups([])
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s');
     }
 }
-
